@@ -1,0 +1,19 @@
+{
+  "name": "omerkocaoglu/sms-service",
+  "type": "library",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Omer Kocaoglu",
+      "email": "okocaoglu05@gmail.com"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "OmerKocaoglu\\SMSService\\": "src"
+    }
+  },
+  "require": {
+    "twilio/sdk": "^5.16"
+  }
+}
