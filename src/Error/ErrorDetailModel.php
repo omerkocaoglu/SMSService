@@ -8,6 +8,4 @@ class ErrorDetailModel
     public $status_code = 0;
     /** @var string */
     public $message = null;
-    /** @var string */
-    public $type = null;
 }
