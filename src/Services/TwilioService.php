@@ -18,7 +18,7 @@ class TwilioService extends ServiceBase
     private $is_phone_number_validated = false;
 
     /** @var string */
-    private $valid_phone_pattern = "/\+?[0-9]+$/";
+    private $valid_phone_pattern = "/^\+?[0-9\-]+$/";
 
     public function __construct($account_ids, $auth_token)
     {
