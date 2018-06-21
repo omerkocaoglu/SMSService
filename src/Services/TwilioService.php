@@ -14,6 +14,8 @@ class TwilioService extends ServiceBase
 {
     /** @var Client */
     private $twilio = null;
+    /** @var bool */
+    private $is_phone_number_validated = false;
 
     /** @var string */
     private $valid_phone_pattern = "/\+?[0-9]+$/";
@@ -31,7 +33,12 @@ class TwilioService extends ServiceBase
      */
     public function isPhoneNumberValid($phone_number)
     {
-        return preg_match($this->valid_phone_pattern, $phone_number) === 1;
+        if (preg_match($this->valid_phone_pattern, $phone_number) === 1) {
+            $this->is_phone_number_validated = true;
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -42,6 +49,18 @@ class TwilioService extends ServiceBase
      */
     public function sendMessage($from_number, $to_number, $body)
     {
+        if ($this->is_phone_number_validated === false) {
+            if ($this->isPhoneNumberValid($to_number) === false) {
+                return $this->createErrorDetail(
+                    HttpStatusCode::UNPROCESSABLE_ENTITY,
+                    sprintf(
+                        'Twilio SMS Service phone number cannot validated %s',
+                        $to_number
+                    )
+                );
+            }
+        }
+
         try {
             /** @var MessageInstance $twilio_response */
             $twilio_response = $this->twilio->messages->create($to_number, ['from' => $from_number, 'body' => $body]);
